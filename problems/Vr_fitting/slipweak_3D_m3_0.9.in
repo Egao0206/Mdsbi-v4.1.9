@@ -1,0 +1,91 @@
+! mode III
+! Model parameters (*see model.f90 for complete list*)
+
+&problem_list
+ name = 'slipweak_m3_0.9' , ninfo = 10 /
+
+&model_list
+ dim = 3, transverse_slip = F, refine = 1d0,
+ mu = 32.04d0, cs = 3.4641d0,
+ x0 = 0d0, y0 = 0d0,
+ nx = 800, ny = 2000, h = 0.1d0,
+ nt = 1700,  dt = 0.01d0 ,
+ method = 'substep', niter = 1  ,
+ substep_method = 'iterative' /
+
+
+&convolution_list
+ formulation = 'displacement' /
+
+&kernel_list
+ precalc = T, method = 'spline' /
+
+&fourier_list
+ plan_level = 2 /
+
+&fault_list
+ asperity_list = T /
+
+!---begin:fault_asperity_list---
+Uniform background properties
+uniform	T
+0d0	10d0
+0d0	10d0
+69.5192d0	0d0	-120d0
+!---end:fault_asperity_list---
+
+
+&friction_list
+ friction = 'slipweak' /
+
+&slipweak_list
+ form = 'linear', asperity_list = T /
+
+!---begin:slipweak_asperity_list---
+Uniform background properties
+uniform	T
+0d0	0d0
+0d0	0d0
+0.4d0	0.525d0	0.677d0
+Trigger
+ellipse T
+0d0 5d0 
+0d0 5d0
+0d0 0d0 -0.112d0
+Unbreakable fault border
+box	F
+0d0	5d0
+0d0	50d0
+0d0	0d0	100000d0
+!---end:slipweak_asperity_list---
+
+
+!---begin:mesh_list---
+hypo
+Ux Vx sx
+0d0	0d0	1	F	F
+0d0	0d0	1	F	F
+0d0	0d0	1	T	T
+0d0	17d0	1
+flt
+Ux Uy Vx Vy sx sy
+-40d0	40d0	1	F	F
+-100d0	100d0	1	F	F
+0d0	0d0	1	T	T
+0d0	17d0	10
+x10y0
+Ux Uy Vx Vy sx sy
+0d0	0d0	1	F	F
+10d0	10d0	1	F	F
+0d0	0d0	1	T	T
+0d0	17d0	10
+flt_real
+Ux Uy Vx Vy sx sy
+-5d0     5d0     1       F       F
+-50d0    50d0    1       F       F
+0d0     0d0     1       T       T
+0d0     17d0    10
+!---end:mesh_list---
+
+&front_list
+ front = T, field = 'V', val = 0.001d0 /

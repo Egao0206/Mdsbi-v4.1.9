@@ -1,0 +1,82 @@
+! Problem name: slipweak_3D_thermal
+! Description: slip-weakening simulation (considering thermal pressurization)
+!----------------------------------------------------------------------------
+
+! Model parameters (*see model.f90 for complete list*)
+&problem_list
+name = 'rast_nBUff', ninfo = 10 / 
+
+&model_list
+ dim = 3, transverse_slip = T, refine = 1d0,
+ mu = 32.04d0, cs = 3.4641d0,
+ x0 = 0d0, y0 = -0d0,
+ nx = 2000, ny = 400, h = 0.2d0,
+ nt = 1500,  cfl = 0.7d0 ,
+ method = 'iterative', niter = 1 /
+!method = 'substep', niter = 1, substep_method = 'adaptive', scheme = 'RK3(2)3', rtol = 1d-3 /
+
+&convolution_list
+ formulation = 'displacement' /
+
+&kernel_list
+ precalc = T, method = 'spline' /
+
+&fourier_list
+ plan_level = 2 /
+
+&fault_list
+  asperity_list = T,
+  scale_Vmin = 1d-12, scale_Vmax = 1d0, 
+  scale_U = 1d0, scale_s = 1d0 /
+
+!---begin:fault_asperity_list---
+Uniform background properties
+uniform	T
+0d0	10d0
+0d0	10d0
+75d0	0d0	-120d0 1.606238999213454d9
+Trigger
+ellipse T
+0d0 3d0
+0d0 3d0
+25d0 0d0 0d0 0d0
+!---end:fault_asperity_list---
+
+
+&friction_list
+ friction = 'ratestate' /
+
+&ratestate_list
+ form = 'AL', asperity_list = T /
+
+!---begin:ratestate_asperity_list---
+Uniform background properties
+uniform	T
+0d0	0d0
+0d0	0d0
+0.6d0	1d-6	0.008d0	0.012d0	0.02d0
+!---end:ratestate_asperity_list---
+
+! f0,V0,a,b,L,fw,Tc,Tw,Vth
+! 0.011 0.014 no super shear
+! 0.008-0.01 0.014 super shear
+
+ 
+
+!---begin:mesh_list---
+hypo
+Ux Vx sx
+0d0	0d0	1	F	F
+0d0	0d0	1	F	F
+0d0	0d0	1	T	T
+0d0	15d0	1
+flt
+Ux Uy Vx Vy sx sy
+-50d0	50d0	1	F	F
+-10d0	10d0	1	F	F
+0d0	0d0	1	T	T
+0d0	15d0	10
+!---end:mesh_list---
+
+&front_list
+ front = T, field = 'V', val = 0.001d0 /

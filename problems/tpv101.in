@@ -1,0 +1,88 @@
+! Problem name: tpv101
+! Description: rate-and-state friction, ageing law, SCEC TPV101 (3D)
+!----------------------------------------------------------------------------
+
+&problem_list
+ name = 'tpv101' , ninfo = 10 /
+
+
+&model_list
+ dim = 3, transverse_slip = T, mu = 32.04d0, cs = 3.4641d0, 
+ refine = 1d0, tmax = 15d0, cfl = 0.34641d0,
+ nx = 576, ny = 384, h = 0.1d0, x0 = 0d0, y0 = -7.5d0,
+ method = 'substep', niter = 1, substep_method = 'adaptive', scheme = 'RK3(2)3', rtol = 1d-3 /
+
+TO ACHEIVE BEST RESULTS, SET nx = 768, ny = 768. THE SMALLER VALUES ABOVE
+SIMPLY MAKE THE PROBLEM MORE COMPUTATIONALLY TRACTABLE FOR DEMONSTRATION,
+BUT THERE IS SOME INFLUENCE OF THE PERIODIC REPLICAS ON THE RUPTURE PROCESS.
+
+&convolution_list
+ formulation = 'displacement' /
+
+&kernel_list
+ precalc = T, method = 'spline' /
+
+&fault_list
+ dynload = T, asperity_list = T, scale_U = 1d0,
+ scale_Vmin = 1d-12, scale_Vmax = 1d0, scale_s = 1d0 /
+
+FAULT_ASPERITY_LIST BELOW IS NOT USED UNLESS YOU SET asperity_list = T;
+INSTEAD THE FAULT PARAMETERS ARE READ FROM A FILE
+
+!---begin:fault_asperity_list---
+Uniform background properties
+uniform	T
+0d0	0d0
+0d0	0d0
+75d0	0d0	-120d0	1.606238999213454d9
+Low stress region
+box	F
+0d0	15d0
+-7.5d0	7.5d0
+0d0	0d0	0d0	1.606078375313531d13
+!---end:fault_asperity_list---
+
+&load_list
+ asperity_list = T, form = 'smooth', T = 1d0 /
+
+!---begin:load_asperity_list---
+Triggering perturbation
+smooth	T
+0d0	3d0
+-7.5d0	3d0
+25d0	0d0	0d0
+!---end:load_asperity_list---
+
+&friction_list
+ friction = 'ratestate' /
+
+&ratestate_list
+ asperity_list = T, form = 'RAL' /
+
+RATESTATE_ASPERITY_LIST BELOW IS NOT USED UNLESS YOU SET asperity_list = T;
+INSTEAD THE FRICTION PARAMETERS ARE READ FROM A FILE
+
+!---begin:ratestate_asperity_list---
+Uniform background properties
+uniform	T
+0d0	0d0
+0d0	0d0
+0.6d0	1d-6	0.008d0	0.012d0	0.02d0
+Velocity-strengthening region
+box	F
+0d0	15d0
+-7.5d0	7.5d0
+0d0	0d0	0.008d0 0d0	0d0
+!---end:ratestate_asperity_list---
+
+!---begin:mesh_list---
+flt
+Ux Vx sx Uy Vy sy logQ
+-30d0	30d0	1	F	F
+-30d0	30d0	1	F	F
+0d0	0d0	1	F	F
+0d0	15d0	10
+!---end:mesh_list---
+
+&front_list
+ front = T, field = 'V', val = 0.001d0 /

@@ -1,0 +1,82 @@
+! mode III
+! shear zone = 10 mm
+! W=10km , Wbuff = 20km,
+! nz = 10 km 
+&problem_list
+ name = 'hh' , ninfo = 10 / 
+
+&model_list
+ dim = 3, transverse_slip = F, refine = 1d0,
+ mu = 32.04d0, cs = 3.4641d0,
+ x0 = 0d0, y0 = 0d0,
+ nx = 400, ny = 300, h = 0.06d0,
+ nt = 30000,  cfl = 0.4d0, sym_y = T, 
+ method = 'adaptive', scheme = 'RK3(2)3', rtol = 1d-3 /
+
+&convolution_list
+ formulation = 'quasidynamic' /
+
+&kernel_list
+ precalc = T, method = 'spline' /
+
+&fourier_list
+ plan_level = 2 /
+
+&fault_list
+ thermpres = F , asperity_list = T ,
+ scale_U = 1d-3, scale_Q = 1d0,
+ scale_s = 1d0, scale_Vmin = 1d-16, scale_Vmax = 1d0,
+ scale_T = 1d0, scale_p = 1d0 /
+
+!---begin:fault_asperity_list---
+Uniform background properties
+uniform	T
+0d0	10d0
+0d0	10d0
+69.9146d0	0d0	-120d0 
+!---end:fault_asperity_list---
+
+
+&friction_list
+ friction = 'slipweak' /
+
+&slipweak_list
+ form = 'time-weakening', asperity_list = T, L = 3d0, V = 0.05d0 , T = 100d0 /
+
+!---begin:slipweak_asperity_list---
+Uniform background properties
+uniform	T
+0d0	0d0
+0d0	0d0
+0.4d0	0.525d0	0.677d0
+Unbreakable fault border
+box	F
+0d0	5d0
+0d0	50d0
+0d0	0d0	100000d0
+!---end:slipweak_asperity_list---
+
+
+!---begin:mesh_list---
+hypo
+Ux Vx sx 
+0d0	0d0	1	F	F
+0d0	0d0	1	F	F
+0d0	0d0	1	F	F
+0d0	1500d0	1
+lone
+Ux Vx sx 
+3.99d0 3.99d0 1 F F
+6.03d0 6.03d0 1 F F
+0d0 10d0 1 F F
+0d0 1500d0 1
+ltwo
+Ux Vx sx 
+-3.42d0 -3.42d0 1 F F
+8.01d0 8.01d0 1 F F
+0d0 10d0 1 F F
+0d0 1500d0 1
+!---end:mesh_list---
+
+&front_list
+ front = T, field = 'V', val = 0.001d0 /

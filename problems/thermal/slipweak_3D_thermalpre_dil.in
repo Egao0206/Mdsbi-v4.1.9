@@ -1,0 +1,102 @@
+! mode III
+! shear zone = 10 mm
+! W=10km , Wbuff = 20km,
+! nz = 10 km 
+&problem_list
+ name = 'slipweak_m3_thermpre_400' , ninfo = 10 / 
+
+&model_list
+ dim = 3, transverse_slip = F, refine = 1d0,
+ mu = 32.04d0, cs = 3.4641d0,
+ x0 = 0d0, y0 = 0d0,
+ nx = 1200, ny = 2000, h = 0.03d0,
+ nz = 10, dz = 0.5,  
+ nt = 2000,  cfl = 0.4d0 ,
+ method = 'substep', niter = 1  ,
+ substep_method = 'iterative' /
+
+! substep_method = 'adaptive', scheme = 'RK3(2)3', rtol = 1d-3 /
+
+
+
+&convolution_list
+ formulation = 'displacement' /
+
+&kernel_list
+ precalc = T, method = 'spline' /
+
+&fourier_list
+ plan_level = 2 /
+
+&fault_list
+ thermpres = T , asperity_list = T ,
+ scale_U = 1d-3, scale_Q = 1d0,
+ scale_s = 1d0, scale_Vmin = 1d-16, scale_Vmax = 1d0,
+ scale_T = 1d0, scale_p = 1d0 /
+
+!---begin:fault_asperity_list---
+Uniform background properties
+uniform	T
+0d0	10d0
+0d0	10d0
+69.9146d0	0d0	-120d0  0.592110469584667d0     483.15d0
+!---end:fault_asperity_list---
+
+&thermpres_list
+ rhoc=2.7 , alphath = 0.65d0, alphahy = 1.81d0, Lambda = 0.92d0, 
+ shape = 'gaussian', w = 50d-3, beta = 1d-10, deltaD = 0.8d0, Phi = 4d-8 / 
+
+&friction_list
+ friction = 'slipweak' /
+
+&slipweak_list
+ form = 'linear', asperity_list = T /
+
+!---begin:slipweak_asperity_list---
+Uniform background properties
+uniform	T
+0d0	0d0
+0d0	0d0
+0.4d0	0.525d0	0.677d0
+Trigger
+ellipse T
+0d0 5d0 
+0d0 5d0
+0d0 0d0 -0.112d0
+Unbreakable fault border
+box	F
+0d0	5d0
+0d0	50d0
+0d0	0d0	100000d0
+!---end:slipweak_asperity_list---
+
+
+!---begin:mesh_list---
+flt
+Ux Vx sx 
+-40d0   40d0    1       F       F
+-100d0  100d0   1       F       F
+-10d0   10d0    1       F       F
+0d0     17d0    10
+hypo
+Ux Vx sx T p T0 p0
+0d0	0d0	1	F	F
+0d0	0d0	1	F	F
+0d0	0d0	1	F	F
+0d0	17d0	1
+lone
+Ux Vx sx p T T0 p0
+3.99d0 3.99d0 1 F F
+6.03d0 6.03d0 1 F F
+0d0 10d0 1 F F
+0d0 17d0 10
+ltwo
+Ux Vx sx p T T0 p0
+-3.42d0 -3.42d0 1 F F
+8.01d0 8.01d0 1 F F
+0d0 10d0 1 F F
+0d0 17d0 10
+!---end:mesh_list---
+
+&front_list
+ front = T, field = 'V', val = 0.001d0 /
