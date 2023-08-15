@@ -1,0 +1,19 @@
+function [] = p_format(xl,yl,tit,fsize)
+    if nargin==4
+        font=fsize
+    else
+        font = 14;
+    end
+    fontname = 'Times New Roman';
+
+    if nargin<=2
+        ylabel(yl,'FontWeight','bold','FontSize',24,...
+    'FontName',fontname);
+        xlabel(xl,'FontSize',font,'FontWeight','bold','FontName',fontname)
+        ylabel(yl,'FontSize',font,'FontWeight','bold','FontName',fontname)
+    else
+        xlabel(xl,'FontSize',font,'FontWeight','bold','FontName',fontname)
+        ylabel(yl,'FontSize',font,'FontWeight','bold','FontName',fontname)
+        title(tit,'FontSize',font+2,'FontWeight','bold','Interpreter','latex')
+    end
+end
