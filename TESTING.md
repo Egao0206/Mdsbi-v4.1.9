@@ -11,4 +11,4 @@ make F95=mpif90 \
   INCL='-I/opt/homebrew/opt/fftw/include'
 ```
 
-The two inputs under `problems/Project1_TP_only/` and `problems/Project1_TP_Dilatancy/` are production-scale examples. They were inspected for the intended TP-only and TP-dilatancy parameter settings but were not run to completion during this packaging check.
+The two inputs under `problems/3D_TP_only/` and `problems/3D_TP_Dilatancy/` are production-scale examples. They were inspected for the intended TP-only and TP-dilatancy parameter settings but were not run to completion during this packaging check.

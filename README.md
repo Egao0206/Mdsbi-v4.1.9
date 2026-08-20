@@ -12,8 +12,8 @@ The Project1 version extends the original thermal-pressurization implementation 
 
 ## Representative Examples
 
-- TP-only: `problems/Project1_TP_only/Model.in`
-- TP-dilatancy: `problems/Project1_TP_Dilatancy/Model.in`
+- TP-only: `problems/3D_TP_only/Model.in`
+- TP-dilatancy: `problems/3D_TP_Dilatancy/Model.in`
 
 These production-scale input files are derived from the model templates used in the associated study. They are representative examples of the 3D fault-fluid formulation and are not intended to reproduce every model in the manuscript parameter sweeps.
 

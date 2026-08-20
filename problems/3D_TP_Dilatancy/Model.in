@@ -1,5 +1,5 @@
 &problem_list
- name = 'Project1_3D_TP_dilatancy' , ninfo = 10 /
+ name = '3D_TP_dilatancy' , ninfo = 10 /
 
 &model_list
  dim = 3, transverse_slip = F, refine = 1d0,

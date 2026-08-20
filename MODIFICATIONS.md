@@ -19,4 +19,4 @@ The Project1 source adds the following capabilities to the original MDSBI v4.1.9
 - Source and build settings synchronized with the Project1 production-code snapshot used for the manuscript simulations.
 - Restoration of `src/fft_routines.f90` as a symbolic link to the selected FFTW3 implementation.
 
-Representative TP-only and TP-dilatancy inputs are located in `problems/Project1_TP_only/` and `problems/Project1_TP_Dilatancy/` and are listed in the repository README.
+Representative TP-only and TP-dilatancy inputs are located in `problems/3D_TP_only/` and `problems/3D_TP_Dilatancy/` and are listed in the repository README.
