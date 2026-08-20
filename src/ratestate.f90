@@ -584,14 +584,15 @@ contains
        dQ = one-V*Q/rs%L(i,j)
     case('AL','RAL') ! uses Q = f0+b*log(V0*theta/L)
        dQ = rs%b(i,j)*rs%V0(i,j)/rs%L(i,j)*(exp((rs%f0(i,j)-Q)/rs%b(i,j))-V/rs%V0(i,j))
-    case('SL','RSL','SF','RSF','FL','RFL')
+    ! case('SL','RSL','SF','RSF','FL','RFL')
+    case('SL','RSL','SF','FL','RFL')
        call fric_rs(rs,V,Q,T,i,j,f)
        call fss_rs(rs,V,T,i,j,fss)
        dQ = V/rs%L(i,j)*(fss-f)
-    !case('RSF') ! used in SCEC code validation problems
-    !   call fss_rs(rs,V,T,i,j,fss)
-    !   Qss = rs%a(i,j)*log(two*rs%V0(i,j)/V*sinh(fss/rs%a(i,j)))
-    !   dQ = V/rs%L(i,j)*(Qss-Q)
+    case('RSF') ! used in SCEC code validation problems
+       call fss_rs(rs,V,T,i,j,fss)
+       Qss = rs%a(i,j)*log(two*rs%V0(i,j)/V*sinh(fss/rs%a(i,j)))
+       dQ = V/rs%L(i,j)*(Qss-Q)
     end select
 
   end function evolution_rs
@@ -912,16 +913,17 @@ contains
        else
           Vw = rs%Vw(i,j)
        end if
-       f = rs%fw(i,j)+(fl-rs%fw(i,j))/(one+(V/Vw)**n)**(one/n)
+       !f = rs%fw(i,j)+(fl-rs%fw(i,j))/(one+(V/Vw)**n)**(one/n)
        if (present(dfdV)) dfdV = (dfldV-(fl-rs%fw(i,j))/(V*(one+(Vw/V)**n)))/ &
             (one+(V/Vw)**n)**(one/n)
-       !if (V<=Vw) then
-       !   f = fl
-       !   if (present(dfdV)) dfdV = dfldV
-       !else
-       !   f = rs%fw(i,j)+(fl-rs%fw(i,j))*Vw/V
-       !   if (present(dfdV)) dfdV = (dfldV-(fl-rs%fw(i,j))/V)*Vw/V
-       !end if
+       if (V<=Vw) then
+          f = fl
+          if (present(dfdV)) dfdV = dfldV
+       else
+          f = rs%fw(i,j)+(fl-rs%fw(i,j))/(one+(V/Vw)**n)**(one/n)
+         ! f = rs%fw(i,j)+(fl-rs%fw(i,j))*Vw/V
+          if (present(dfdV)) dfdV = (dfldV-(fl-rs%fw(i,j))/V)*Vw/V
+       end if
     case default
        call error('Steady state friction not defined for friction law: ' // &
             trim(adjustl(rs%form)),'fss_rs')

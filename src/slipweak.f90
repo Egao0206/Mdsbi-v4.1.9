@@ -345,8 +345,9 @@ contains
        fk = max(sw%fs(i,j)-(sw%fs(i,j)-sw%fd(i,j))*U/sw%Dc(i,j),sw%fd(i,j))
         
        ! Prescribed rupture tip location
+       ! Prevent the imposed nucleation front from weakening the unbreakable border.
        xm = sw%V*t
-       if(abs(r)<sw%V*sw%T) then
+       if((abs(r)<sw%V*sw%T).and.(sw%fs(i,j)<1)) then
              if (abs(r)<=xm-sw%L) then
                 fkm = sw%fd(i,j)
              elseif((abs(r)<xm).and.(abs(r)>xm-sw%L)) then

@@ -1,8 +1,8 @@
 # Set build type
 
-BUILD = debug
+#BUILD = debug
 #BUILD = default
-#BUILD = production
+BUILD = production
 #BUILD = openmp
 
 # Compiler options for different machines

@@ -372,21 +372,21 @@ contains
     if (is_master) then
         
        if (mdl%sym_y) then
-               if (mod(mdl%ny,2)==0) then
-                    py = pf_sy_ye
-                    fac = onec
-                else
-                    py = pf_sy_yo
-                    fac = -img
-                end if    
-          !select case(sym)
-          !case('e')
-           !  py = pf_sy_ye
-            ! fac = onec ! since exp(-ikx)=cos(kx)-i*sin(kx) (and taking coefficient of cosine)
+               !if (mod(mdl%ny,2)==0) then
+                  !  py = pf_sy_ye
+                 !   fac = onec
+                !else
+                 !   py = pf_sy_yo
+                !    fac = -img
+               ! end if
+         !select case(sym)
+         ! case('e')
+          !   py = pf_sy_ye
+           !  fac = onec ! since exp(-ikx)=cos(kx)-i*sin(kx) (and taking coefficient of cosine)
           !case('o')
-            ! py = pf_sy_yo
-            !fac = -img ! since exp(-ikx)=cos(kx)-i*sin(kx) (and taking coefficient of sine)
-          !end select
+            py = pf_sy_yo
+            fac = -img ! since exp(-ikx)=cos(kx)-i*sin(kx) (and taking coefficient of sine)
+         ! end select
 
           do i = 1,mdl%nx
              Sy = Rm(i,:)
@@ -491,21 +491,20 @@ contains
     if (is_master) then
 
        if (mdl%sym_y) then
-               if (mod(mdl%ny,2)==0) then
-                    py = pf_sy_ye
-                    fac = onec
-                else
-                    py = pf_sy_yo
-                    fac = -img
-                end if
-
+               !if (mod(mdl%ny,2)==0) then
+                 !   py = pf_sy_ye
+                !    fac = onec
+               ! else
+                  !  py = pf_sy_yo
+                 !   fac = -img
+                !end if
           !select case(sym)
           !case('e')
            !  py = pi_sy_ye
             ! fac = onec
           !case('o')
-            ! py = pi_sy_yo
-            ! fac = img
+             py = pi_sy_yo
+             fac = img
          ! end select
 
           do j = 1,mdl%ny

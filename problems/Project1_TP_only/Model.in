@@ -1,0 +1,89 @@
+&problem_list
+ name = 'Project1_3D_TP_only' , ninfo = 10 /
+
+&model_list
+ dim = 3, transverse_slip = F, refine = 1d0,
+ mu = 32.46d0, cs = 3.4641d0,
+ x0 = 0d0, y0 = 0d0,
+ nx = 2400, ny = 4000, h = 0.05d0,
+ nz = 50, dz = 5d-3, cfl = 0.3d0,
+ tmax = 100,
+ method = 'iterative'/
+
+
+&convolution_list
+ formulation = 'displacement' /
+
+&kernel_list
+ precalc = T, method = 'spline' /
+
+&fourier_list
+ plan_level = 2 /
+
+&fault_list
+ thermpres = T , asperity_list = T ,
+ scale_U = 1d-3, scale_Q = 1d0,
+ scale_s = 1d0, scale_Vmin = 1d-16, scale_Vmax = 1d0,
+ scale_T = 1d0, scale_p = 1d0 /
+
+!---begin:fault_asperity_list---
+Uniform background properties
+uniform T
+0d0     10d0
+0d0     10d0
+19.229d0       0d0     -30d0 
+!---end:fault_asperity_list---
+
+&thermpres_list
+ rhoc=2.7d0, alphath = 1e-6d0, alphahy = 1e-5d0, Lambda = 0.1d0,
+ shape = 'gaussian', w = 50d-3, beta = 1d0, deltaD = 0.4d0, Phi = 0d0  /
+
+&friction_list
+ friction = 'slipweak' /
+
+&slipweak_list
+ form = 'time-weakening', asperity_list = T, L = 3d0, V = 0.6d0 , T = 16.6667d0 /
+
+!---begin:slipweak_asperity_list---
+Uniform background properties
+uniform T
+0d0     0d0
+0d0     0d0
+0.4d0   0.525d0 0.677d0
+Unbreakable fault border
+box     F
+0d0     5d0
+0d0    100d0
+0d0     0d0     100000d0
+!---end:slipweak_asperity_list---
+
+
+!---begin:mesh_list---
+flt
+Ux Vx sx
+-5d0     5d0     1       F       F
+-100d0   100d0     1       F       F
+0d0     0d0     1       F       F
+0d0     100d0  1
+point1
+Ux Vx sx p T
+0d0	0d0	1	F	F
+40d0	40d0	1	F	F
+0d0	0d0	1	F	F
+0d0	100d0	1	F	F
+point2
+Ux Vx sx p T
+0d0     0d0     1       F       F
+50d0    50d0    1       F       F
+0d0     0d0     1       F       F
+0d0     100d0       1       F       F
+point3
+Ux Vx sx p T
+0d0     0d0     1       F       F
+60d0    60d0    1       F       F
+0d0     0d0     1       F       F
+0d0     100d0       1       F       F
+!---end:mesh_list---
+
+&front_list
+ front = T, field = 'V', val = 0.001d0 /

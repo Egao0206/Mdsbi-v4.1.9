@@ -356,8 +356,11 @@ contains
        ! for now, include all points in x
        ms%mx = mdl%mx
        ms%px = mdl%px
+       !ms%mx=ceiling((ms%xmin+0.5*mdl%nx*mdl%h)/mdl%h)
+       !ms%px=floor((ms%xmax+0.5*mdl%nx*mdl%h)/mdl%h)
        ms%xmin = mdl%x(ms%mx)
        ms%xmax = mdl%x(ms%px)
+       !write(*,*) ms%xmin,ms%xmax
        ms%nx = 1+ms%px-ms%mx
        ms%dx = mdl%dx
        ms%fx = zero

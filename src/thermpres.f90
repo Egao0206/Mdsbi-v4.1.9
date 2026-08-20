@@ -21,7 +21,7 @@ module thermpres
   ! ALPHAHY = hydraulic diffusivity
   ! LAMBDA = pore pressure rise per unit temprature rise
   ! SHAPE = shape of strain distribution
-  ! W = width of deformation zone
+  ! W = half-width of deformation zone(for gaussian and box distribution)
   ! PHI = Maximum inelastic porosity change at large slip
   ! DELTAD = Characteristic slip distance associated with the change in porosity
   ! BETA =  volumetric pore fluid storage coefficient beta = n*(beta_n+beta_f)
@@ -61,13 +61,15 @@ contains
 
     ! Internal Parameters:
     ! STAT = I/O error flag
-    ! RHOC = volumetric heat capacity
+    ! dp = pressure (MPa)
+    ! RHOC = volumetric heat capacity (MPa/K)
     ! K = thermal conductivity
-    ! ALPHATH = theamal diffusivity
-    ! ALPHAHY = hydraulic diffusivity
-    ! LAMBDA = pore pressure rise per unit temerature rise
+    ! ALPHATH = theamal diffusivity  (m^2/s)
+    ! ALPHAHY = hydraulic diffusivity (m^2/s)
+    ! LAMBDA = pore pressure rise per unit temerature rise (MPa/K)
     ! SHAPE = shape of strain distribution
-    ! W = width of deformation zone
+    ! W = half-width of deformation zone (m)
+    ! dz = grid size of z  (m)
     ! T_BND = temperature at remote boundary
     ! P_BND = pressure at remote boundary
     ! ASPERITY_FILE = add heterogeneity to initial fields
@@ -374,6 +376,7 @@ contains
     M = size(T)
     ! shear heating, either as boundary condition for slip-on-plane model or as
     ! volumetric heat source term for finite width shear zone model
+    allocate(G_temp(M))
 
     select case(tp%shape)
 
@@ -386,7 +389,8 @@ contains
        ! no volumetric source term
 
        dT = zero
-   
+       G_temp = zero
+
     case default
 
        ! symmetry BC at z=0
@@ -396,7 +400,6 @@ contains
        ! volumetric source term
 
        allocate(G(M))
-       allocate(G_temp(M))
        allocate(asp)
 
        asp%type = tp%shape

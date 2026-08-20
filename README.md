@@ -12,10 +12,14 @@ The Project1 version extends the original thermal-pressurization implementation 
 
 ## Representative Examples
 
-- TP-only: `problems/thermal/slipweak_3D_thermalpre.in`
-- TP-dilatancy: `problems/thermal/slipweak_3D_thermalpre_dil.in`
+- TP-only: `problems/Project1_TP_only/Model.in`
+- TP-dilatancy: `problems/Project1_TP_Dilatancy/Model.in`
 
-These input files are representative examples of the 3D fault-fluid formulation used in the associated study. They are not intended to reproduce every model in the manuscript parameter sweeps.
+These production-scale input files are derived from the model templates used in the associated study. They are representative examples of the 3D fault-fluid formulation and are not intended to reproduce every model in the manuscript parameter sweeps.
+
+## Build Verification
+
+The synchronized source was compiled on macOS using GNU Fortran through `mpif90`, FFTW3, and LAPACK. The production-scale examples were not run as smoke tests. See `TESTING.md` for the build command and verification scope.
 
 ## Attribution
 
